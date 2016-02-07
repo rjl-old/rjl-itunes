@@ -60,7 +60,6 @@ class Itunes
     end
 
     def grouping=( new_grouping )
-      # for each album track
       @album_tracks_hash.each do |track_id, track_hash|
         @itunes_hash["Tracks"][track_id]["Grouping"] = new_grouping
       end
@@ -68,6 +67,12 @@ class Itunes
 
     def genre
       return get_or_exit "Genre"
+    end
+
+    def genre=( new_genre )
+      @album_tracks_hash.each do |track_id, track_hash|
+        @itunes_hash["Tracks"][track_id]["Genre"] = new_genre
+      end
     end
 
     # return true if tracks all have the same property

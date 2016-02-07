@@ -15,9 +15,11 @@ Feature: Manipulate album information directly
     When I search for "ZüriWest", "Retour - Best of Züri West"
     Then I get an album with Grouping "Ruby Test" and Genre "Rock"
 
-  Scenario: Changing album Grouping information in iTunes
+  Scenario: Changing album Grouping and Genre information in iTunes
 
     Given an iTunes collection
     And the album  "Retour - Best of Züri West" by "ZüriWest"
     When I change the Grouping to "Test Grouping"
-    Then the Grouping is "Test Grouping" when the iTunes colletion is reloaded
+    And I change the Genre to "Test Genre"
+    Then the Grouping is "Test Grouping"
+    And the Genre is "Test Genre"

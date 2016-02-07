@@ -27,6 +27,14 @@ When(/^I change the Grouping to "([^"]*)"$/) do |new_grouping|
   @album.grouping = new_grouping
 end
 
-Then(/^the Grouping is "([^"]*)" when the iTunes colletion is reloaded$/) do |new_grouping|
+When(/^I change the Genre to "([^"]*)"$/) do |new_genre|
+  @album.genre = new_genre
+end
+
+Then(/^the Grouping is "([^"]*)"$/) do |new_grouping|
   expect(@album.grouping).to eq(new_grouping)
+end
+
+Then(/^the Genre is "([^"]*)"$/) do |new_genre|
+  expect(@album.genre).to eq(new_genre)
 end
