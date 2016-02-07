@@ -8,17 +8,70 @@
 
 require 'plist' # https://github.com/bleything/plist
 
-class Itunes
 
-  attr_reader :album
-  attr_reader :tracks_hash
-  attr_reader :itunes_plist
+class Itunes
 
   ITUNES_PATH = '/Users/richlyon/Music/iTunes/iTunes Music Library.xml'
   LIVE = '/Users/richlyon/Music/iTunes LIVE DO NOT DELETE/iTunes Music Library.xml'
 
+  # attr_reader :album
+  attr_reader :albums
+  attr_reader :tracks_hash
+  attr_reader :itunes_plist
   attr_reader :itunes_path
   attr_reader :itunes_hash
+
+  class Album < Itunes
+
+    attr_accessor :album
+    attr_accessor :artist
+    attr_accessor :grouping
+    attr_accessor :genre
+
+    def initialize( album_title, artist = nil )
+      super()
+      @album = album_title
+      @artist = artist
+      @tracks_hash = @itunes_hash["Tracks"].reject { |key, hash|
+        (hash["Album"] != album_title) &&
+        (hash["Artist"] != artist)
+      }
+    end
+
+    def get_or_exit property
+      if not same? property
+        raise "'Tracks have different #{property} for artist #{artist} album #{@album}"
+        exit
+      else
+        album_id, album_hash = @tracks_hash.first
+        property = album_hash[property]
+      end
+      return property
+    end
+
+    def grouping
+      return get_or_exit "Grouping"
+    end
+
+    def genre
+      return get_or_exit "Genre"
+    end
+
+    # return true if tracks all have the same property
+    def same? property
+      properties = []
+      @tracks_hash.each do |track_id, track_hash|
+        properties << track_hash[property]
+      end
+
+      return properties[0] if properties.all? {|x| x == properties[0]}
+    end
+
+    def exists?
+      return @album
+    end
+  end
+
 
   def initialize( itunes_path = ITUNES_PATH )
     @itunes_path = itunes_path
@@ -81,7 +134,7 @@ class Itunes
     return track_hash["Kind"].include? "audio file"
   end
 
-  private
+
 
   def debug( message )
     puts "="*100
