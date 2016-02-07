@@ -3,12 +3,13 @@ Feature: Read album information from the iTunes plit
   In order to get information about genre and style, as an iTunes user
   I need to get the artist and album names for all the music albums in iTunes.
 
-  Scenario: Get the artist and album name of the first album
+  Scenario Outline: Get artist group and genre information
 
-    This will break if the first album changes. Created here to get started.
+    This checks we can get album information
 
-    Given there is an iTunes plist
-    And it has at least one album
-    When I get the album with id 2574
-    Then it has the artist "ZüriWest"
-    And the album title is "Retour - Best of Züri West"
+    Given album <id>
+    Then artist "<artist>", album "<album>", grouping "<grouping>", genre "<genre>"
+
+      Examples:
+        | id   | artist   | album                       | grouping | genre |
+        | 2574 | ZüriWest | Retour - Best of Züri West  | Ruby Test | Rock |
