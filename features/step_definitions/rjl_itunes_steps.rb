@@ -26,6 +26,9 @@ Given(/^track with id (\d+)$/) do |track_id|
   $track = itunes.album( track_id )
 end
 
+Given(/^an original grouping "([^"]*)"$/) do |old_grouping|
+  expect($track["Grouping"]).to eql(old_grouping)
+end
 
 When(/^I change the grouping to "([^"]*)"$/) do |new_grouping|
   itunes.update_album( $track_id, "Grouping", new_grouping)
