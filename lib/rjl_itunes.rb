@@ -12,3 +12,14 @@
 
 require "rjl_itunes/rjl_itunes"
 require "rjl_itunes/version"
+
+class Itunes
+
+  ITUNES_PATH = '/Users/richlyon/Music/iTunes/iTunes Music Library.xml'
+
+  attr_reader :itunes_path
+
+  def initialize( itunes_path = ITUNES_PATH )
+    @itunes_path = itunes_path
+  end
+end
