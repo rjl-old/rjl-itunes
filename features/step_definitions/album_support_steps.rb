@@ -1,11 +1,3 @@
-module KnowsTheDomain
-  def itunes
-    @itunes ||= Itunes.new
-  end
-end
-World(KnowsTheDomain)
-
-
 # Scenario: Finding albums by artist and album name
 
 Given(/^an iTunes collection$/) do
