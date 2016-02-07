@@ -1,4 +1,4 @@
-Feature: Manipulate album information directly 
+Feature: Manipulate album information directly
 
   Scenario: Finding albums by artist and album name
 
@@ -14,3 +14,10 @@ Feature: Manipulate album information directly
     Given an iTunes collection
     When I search for "ZüriWest", "Retour - Best of Züri West"
     Then I get an album with Grouping "Ruby Test" and Genre "Rock"
+
+  Scenario: Changing album Grouping information in iTunes
+
+    Given an iTunes collection
+    And the album  "Retour - Best of Züri West" by "ZüriWest"
+    When I change the Grouping to "Test Grouping"
+    Then the Grouping is "Test Grouping" when the iTunes colletion is reloaded

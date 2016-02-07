@@ -21,6 +21,12 @@ class Itunes
   attr_reader :itunes_path
   attr_reader :itunes_hash
 
+  def initialize( itunes_path = ITUNES_PATH )
+    @itunes_path = itunes_path
+    @itunes_hash = Plist::parse_xml( ITUNES_PATH )
+    @tracks_hash = get_audio_tracks
+  end
+
   class Album < Itunes
 
     attr_accessor :album
@@ -32,7 +38,7 @@ class Itunes
       super()
       @album = album_title
       @artist = artist
-      @tracks_hash = @itunes_hash["Tracks"].reject { |key, hash|
+      @album_tracks_hash = @itunes_hash["Tracks"].reject { |key, hash|
         (hash["Album"] != album_title) &&
         (hash["Artist"] != artist)
       }
@@ -43,7 +49,7 @@ class Itunes
         raise "'Tracks have different #{property} for artist #{artist} album #{@album}"
         exit
       else
-        album_id, album_hash = @tracks_hash.first
+        album_id, album_hash = @album_tracks_hash.first
         property = album_hash[property]
       end
       return property
@@ -53,6 +59,13 @@ class Itunes
       return get_or_exit "Grouping"
     end
 
+    def grouping=( new_grouping )
+      # for each album track
+      @album_tracks_hash.each do |track_id, track_hash|
+        @itunes_hash["Tracks"][track_id]["Grouping"] = new_grouping
+      end
+    end
+
     def genre
       return get_or_exit "Genre"
     end
@@ -60,7 +73,7 @@ class Itunes
     # return true if tracks all have the same property
     def same? property
       properties = []
-      @tracks_hash.each do |track_id, track_hash|
+      @album_tracks_hash.each do |track_id, track_hash|
         properties << track_hash[property]
       end
 
@@ -70,13 +83,6 @@ class Itunes
     def exists?
       return @album
     end
-  end
-
-
-  def initialize( itunes_path = ITUNES_PATH )
-    @itunes_path = itunes_path
-    @itunes_hash = Plist::parse_xml( ITUNES_PATH )
-    @tracks_hash = get_audio_tracks
   end
 
   def update_album( track_id, property, value )
