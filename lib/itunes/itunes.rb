@@ -10,7 +10,6 @@ require 'plist' # https://github.com/bleything/plist
 
 class Itunes
 
-  attr_reader :albums # for debugging - likely won't require this
   attr_reader :album
   attr_reader :tracks_hash
   attr_reader :itunes_plist
@@ -24,7 +23,6 @@ class Itunes
     @itunes_path = itunes_path
     @itunes_hash = Plist::parse_xml( ITUNES_PATH )
     @tracks_hash = get_audio_tracks
-    @albums = get_albums
   end
 
   def save
