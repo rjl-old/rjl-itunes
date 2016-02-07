@@ -8,6 +8,7 @@ Feature: Read album information from the iTunes plit
     This will break if the first album changes. Creted here to get started.
 
     Given there is an iTunes plist
+    And it has at least one album
     When I get the first album
     Then it has the artist "ABBA"
     And the album title is "Gold"
