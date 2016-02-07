@@ -18,11 +18,42 @@ class Itunes
   LIVE = '/Users/richlyon/Music/iTunes LIVE DO NOT DELETE/iTunes Music Library.xml'
 
   attr_reader :itunes_path
+  attr_reader :itunes_hash
 
   def initialize( itunes_path = ITUNES_PATH )
     @itunes_path = itunes_path
     @itunes_hash = Plist::parse_xml( ITUNES_PATH )
     @tracks_hash = get_audio_tracks
+  end
+
+  def update_album( track_id, property, value )
+    # get all of the tracks in that album
+    tracks = get_related_tracks( track_id )
+
+    # For each track
+    tracks.each do |track_id, track_hash|
+      # change the property
+      @itunes_hash["Tracks"][track_id.to_s][property] = value
+    end
+  end
+
+  # Return all of the tracks in the same album as the given track
+  def get_related_tracks( track_id )
+    album_title = @itunes_hash["Tracks"][track_id.to_s]["Album"]
+    tracks = @itunes_hash["Tracks"].reject { |key, hash| hash["Album"] != album_title}
+    return tracks
+  end
+
+  # Return True if all tracks in the same album as the track have the same property
+  # Used to check all genres and groupings are the same
+  def same?( track_id, property )
+    tracks = get_related_tracks track_id
+    groupings = []
+    tracks.each do |track_id, hash|
+      groupings << hash["Grouping"]
+    end
+
+    return groupings.all? {|x| x == groupings[0]}
   end
 
   def save
@@ -50,16 +81,19 @@ class Itunes
     return track_hash["Kind"].include? "audio file"
   end
 
-  def get_albums
-    album = {
-      "artist" => "ABBA",
-      "album"  => "Gold"
-    }
-    return [album]
+  private
+
+  def debug( message )
+    puts "="*100
+    puts message
+    puts "="*100
   end
 
-
-  def get_first_album
-    return "ACDC"
+  def niceprint( album_id )
+    properties = ["Artist", "Album", "Name", "Grouping", "Genre"]
+    puts "="*50
+    properties.each do |property|
+      puts "#{property}:  #{@itunes_hash["Tracks"][album_id.to_s][property]}"
+    end
   end
 end

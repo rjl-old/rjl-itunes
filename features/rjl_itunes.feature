@@ -7,9 +7,17 @@ Feature: Read album information from the iTunes plit
 
     This checks we can get album information
 
-    Given album <id>
+    Given track <id>
     Then artist "<artist>", album "<album>", grouping "<grouping>", genre "<genre>"
 
       Examples:
         | id   | artist   | album                       | grouping | genre |
         | 2574 | ZüriWest | Retour - Best of Züri West  | Ruby Test | Rock |
+
+
+  Scenario: Change group and genre information without saving to disk
+
+    Given track with id 2574
+    And an original grouping "Ruby Test"
+    When I change the grouping to "Ruby Test2"
+    Then all the album track groupings are "Ruby Test2"
