@@ -15,6 +15,8 @@ class Album
   attr_accessor :grouping
   attr_accessor :genre
 
+  attr_reader   :album_hash
+
   def initialize album_hash
     track_id, track_hash = album_hash.first
     @artist = track_hash["Artist"]
@@ -23,10 +25,35 @@ class Album
     @genre = track_hash["Genre"]
     @album_hash = album_hash
   end
+
+  def genre=( new_genre )
+    new_album_hash = {}
+    @album_hash.each do |track_id, track_hash|
+      track_hash["Genre"] = new_genre
+      new_album_hash[track_id] = track_hash
+    end
+
+    # update iTunes. Somehow   :(
+
+    @album_hash = new_album_hash
+  end
+
+  def grouping=( new_grouping )
+    new_album_hash = {}
+    @album_hash.each do |track_id, track_hash|
+      track_hash["Grouping"] = new_grouping
+      new_album_hash[track_id] = track_hash
+    end
+
+    # update iTunes. Somehow   :(
+
+    @album_hash = new_album_hash
+  end
 end
 
 class Itunes
 
+  TEST_ITUNES_PATH = '/Users/richlyon/Coding/Ruby/development/rjl_itunes/features/assets/test/iTunes Music Library.xml'
   ITUNES_PATH = '/Users/richlyon/Music/iTunes/iTunes Music Library.xml'
   LIVE = '/Users/richlyon/Music/iTunes LIVE DO NOT DELETE/iTunes Music Library.xml'
 
@@ -37,7 +64,7 @@ class Itunes
   attr_reader :itunes_path
   attr_reader :itunes_hash
 
-  def initialize( itunes_path = ITUNES_PATH )
+  def initialize( itunes_path = TEST_ITUNES_PATH )
     @itunes_path = itunes_path
     @itunes_hash = Plist::parse_xml( ITUNES_PATH )
     @tracks_hash = get_audio_tracks

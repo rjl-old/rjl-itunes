@@ -16,3 +16,18 @@ Then(/^the grouping is "([^"]*)" and the genre is "([^"]*)"$/) do |grouping, gen
   expect($album.grouping).to eq(grouping)
   expect($album.genre).to eq(genre)
 end
+
+When(/^I set grouping to "([^"]*)" and genre to "([^"]*)" and save$/) do |grouping, genre|
+  $album = itunes.albums.first
+  $album.grouping = grouping
+  $album.genre = genre
+end
+
+Then(/^The reloaded grouping and genre are "([^"]*)" and genre to "([^"]*)"$/) do |grouping, genre|
+  itunes.save
+  itunes_new = Itunes.new
+  $album = itunes_new.albums.first
+  expect($album.grouping).to eq(grouping)
+  expect($album.genre).to eq(genre)
+
+end
