@@ -39,8 +39,7 @@ class Itunes
       @album = album_title
       @artist = artist
       @album_tracks_hash = @itunes_hash["Tracks"].reject { |key, hash|
-        (hash["Album"] != album_title) &&
-        (hash["Artist"] != artist)
+        (hash["Artist"] != artist) || (hash["Album"] != album_title)
       }
     end
 
@@ -86,7 +85,7 @@ class Itunes
     end
 
     def exists?
-      return @album
+      return !@album_tracks_hash.empty?
     end
   end
 
