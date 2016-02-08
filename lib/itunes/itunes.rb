@@ -59,21 +59,16 @@ class Itunes
       titles << album_hash["Album"] if !titles.include? album_hash["Album"]
     end
 
-    puts albums
-
-    albums_hash = {}
     albums_list = []
     titles.each do |title|
       tracks = {}
       @tracks_hash.each do |album_id, album_hash|
         tracks[album_id] = album_hash if title == album_hash["Album"]
       end
-      albums_hash[title] = tracks
       albums_list << Album.new(tracks)
     end
     return albums_list
   end
-
 
   def update_album( track_id, property, value )
     # get all of the tracks in that album
