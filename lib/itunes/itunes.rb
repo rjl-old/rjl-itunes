@@ -120,7 +120,7 @@ class Itunes
   end
 
   def save
-    File.open(@filepath, 'w') {|f| f.write( itunes.to_plist) }
+    File.open(@itunes_path, 'w') {|f| f.write( @itunes_hash.to_plist) }
   end
 
   def album ( album_id )
