@@ -8,6 +8,22 @@
 
 require 'plist' # https://github.com/bleything/plist
 
+class Album
+
+  attr_reader   :artist
+  attr_reader   :album
+  attr_accessor :grouping
+  attr_accessor :genre
+
+  def initialize album_hash
+    track_id, track_hash = album_hash.first
+    @artist = track_hash["Artist"]
+    @album = track_hash["Album"]
+    @grouping = track_hash["Grouping"]
+    @genre = track_hash["Genre"]
+    @album_hash = album_hash
+  end
+end
 
 class Itunes
 
@@ -25,69 +41,39 @@ class Itunes
     @itunes_path = itunes_path
     @itunes_hash = Plist::parse_xml( ITUNES_PATH )
     @tracks_hash = get_audio_tracks
+    @albums = get_albums
   end
 
-  class Album < Itunes
-
-    attr_accessor :album
-    attr_accessor :artist
-    attr_accessor :grouping
-    attr_accessor :genre
-
-    def initialize( album_title, artist = nil )
-      super()
-      @album = album_title
-      @artist = artist
-      @album_tracks_hash = @itunes_hash["Tracks"].reject { |key, hash|
-        (hash["Artist"] != artist) || (hash["Album"] != album_title)
-      }
+  def get_audio_tracks
+    tracks = []
+    audio_files_hash = @itunes_hash["Tracks"].reject { |key, hash| !audio_file?( hash )}
+    audio_files_hash.each do |track_id, track_hash|
+      tracks << track_hash
     end
-
-    def get_or_exit property
-      if not same? property
-        raise "'Tracks have different #{property} for artist #{artist} album #{@album}"
-        exit
-      else
-        album_id, album_hash = @album_tracks_hash.first
-        property = album_hash[property]
-      end
-      return property
-    end
-
-    def grouping
-      return get_or_exit "Grouping"
-    end
-
-    def grouping=( new_grouping )
-      @album_tracks_hash.each do |track_id, track_hash|
-        @itunes_hash["Tracks"][track_id]["Grouping"] = new_grouping
-      end
-    end
-
-    def genre
-      return get_or_exit "Genre"
-    end
-
-    def genre=( new_genre )
-      @album_tracks_hash.each do |track_id, track_hash|
-        @itunes_hash["Tracks"][track_id]["Genre"] = new_genre
-      end
-    end
-
-    # return true if tracks all have the same property
-    def same? property
-      properties = []
-      @album_tracks_hash.each do |track_id, track_hash|
-        properties << track_hash[property]
-      end
-
-      return properties[0] if properties.all? {|x| x == properties[0]}
-    end
-
-    def exists?
-      return !@album_tracks_hash.empty?
-    end
+    return audio_files_hash
   end
+
+  def get_albums
+    titles = []
+    @tracks_hash.first(1).each do |album_id, album_hash|
+      titles << album_hash["Album"] if !titles.include? album_hash["Album"]
+    end
+
+    puts albums
+
+    albums_hash = {}
+    albums_list = []
+    titles.each do |title|
+      tracks = {}
+      @tracks_hash.each do |album_id, album_hash|
+        tracks[album_id] = album_hash if title == album_hash["Album"]
+      end
+      albums_hash[title] = tracks
+      albums_list << Album.new(tracks)
+    end
+    return albums_list
+  end
+
 
   def update_album( track_id, property, value )
     # get all of the tracks in that album
@@ -127,14 +113,7 @@ class Itunes
     return @tracks_hash[album_id.to_s]
   end
 
-  def get_audio_tracks
-    tracks = []
-    audio_files_hash = @itunes_hash["Tracks"].reject { |key, hash| !audio_file?( hash )}
-    audio_files_hash.each do |track_id, track_hash|
-      tracks << track_hash
-    end
-    return audio_files_hash
-  end
+
 
   def valid?
     return !@itunes_hash.nil?
