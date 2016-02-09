@@ -18,12 +18,16 @@ class Album
   attr_reader   :album_hash
 
   def initialize album_hash
+    @album_hash = album_hash
+    parse_album_hash
+  end
+
+  def parse_album_hash
     track_id, track_hash = album_hash.first
     @artist = track_hash["Artist"]
     @album = track_hash["Album"]
     @grouping = track_hash["Grouping"]
     @genre = track_hash["Genre"]
-    @album_hash = album_hash
   end
 
   def genre=( new_genre )
@@ -32,10 +36,9 @@ class Album
       track_hash["Genre"] = new_genre
       new_album_hash[track_id] = track_hash
     end
-
-    # update iTunes. Somehow   :(
-
     @album_hash = new_album_hash
+    parse_album_hash
+    # update iTunes. Somehow   :(
   end
 
   def grouping=( new_grouping )
@@ -44,10 +47,9 @@ class Album
       track_hash["Grouping"] = new_grouping
       new_album_hash[track_id] = track_hash
     end
-
-    # update iTunes. Somehow   :(
-
     @album_hash = new_album_hash
+    parse_album_hash
+    # update iTunes. Somehow   :(
   end
 end
 
