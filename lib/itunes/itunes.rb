@@ -7,51 +7,7 @@
 #
 
 require 'plist' # https://github.com/bleything/plist
-
-class Album
-
-  attr_reader   :artist
-  attr_reader   :album
-  attr_accessor :grouping
-  attr_accessor :genre
-
-  attr_reader   :album_hash
-
-  def initialize album_hash
-    @album_hash = album_hash
-    parse_album_hash
-  end
-
-  def parse_album_hash
-    track_id, track_hash = album_hash.first
-    @artist = track_hash["Artist"]
-    @album = track_hash["Album"]
-    @grouping = track_hash["Grouping"]
-    @genre = track_hash["Genre"]
-  end
-
-  def genre=( new_genre )
-    new_album_hash = {}
-    @album_hash.each do |track_id, track_hash|
-      track_hash["Genre"] = new_genre
-      new_album_hash[track_id] = track_hash
-    end
-    @album_hash = new_album_hash
-    parse_album_hash
-    # update iTunes. Somehow   :(
-  end
-
-  def grouping=( new_grouping )
-    new_album_hash = {}
-    @album_hash.each do |track_id, track_hash|
-      track_hash["Grouping"] = new_grouping
-      new_album_hash[track_id] = track_hash
-    end
-    @album_hash = new_album_hash
-    parse_album_hash
-    # update iTunes. Somehow   :(
-  end
-end
+require 'pp'    # debugging only
 
 class Itunes
 
@@ -66,6 +22,52 @@ class Itunes
   attr_reader :itunes_path
   attr_reader :itunes_hash
 
+  class Album
+
+    attr_reader   :artist
+    attr_reader   :album
+    attr_accessor :grouping
+    attr_accessor :genre
+
+    attr_reader   :album_hash
+
+    def initialize album_hash
+      @album_hash = album_hash
+      parse_album_hash
+    end
+
+    def parse_album_hash
+      track_id, track_hash = album_hash.first
+      @artist = track_hash["Artist"]
+      @album = track_hash["Album"]
+      @grouping = track_hash["Grouping"]
+      @genre = track_hash["Genre"]
+    end
+
+    def genre=( new_genre )
+      new_album_hash = {}
+      @album_hash.each do |track_id, track_hash|
+        track_hash["Genre"] = new_genre
+        new_album_hash[track_id] = track_hash
+      end
+      @album_hash = new_album_hash
+      parse_album_hash
+      # puts "> #{Itunes.itunes_path}"
+      # update iTunes. Somehow   :(
+    end
+
+    def grouping=( new_grouping )
+      new_album_hash = {}
+      @album_hash.each do |track_id, track_hash|
+        track_hash["Grouping"] = new_grouping
+        new_album_hash[track_id] = track_hash
+      end
+      @album_hash = new_album_hash
+      parse_album_hash
+      # update iTunes. Somehow   :(
+    end
+  end
+
   def initialize( itunes_path = TEST_ITUNES_PATH )
     @itunes_path = itunes_path
     @itunes_hash = Plist::parse_xml( ITUNES_PATH )
@@ -73,12 +75,16 @@ class Itunes
     @albums = get_albums
   end
 
+
   def get_audio_tracks
     tracks = []
     audio_files_hash = @itunes_hash["Tracks"].reject { |key, hash| !audio_file?( hash )}
     audio_files_hash.each do |track_id, track_hash|
       tracks << track_hash
     end
+
+    # dump( audio_files_hash, 'audio_files_hash' )
+
     return audio_files_hash
   end
 
@@ -87,7 +93,6 @@ class Itunes
     @tracks_hash.first(1).each do |album_id, album_hash|
       titles << album_hash["Album"] if !titles.include? album_hash["Album"]
     end
-
     albums_list = []
     titles.each do |title|
       tracks = {}
@@ -115,5 +120,13 @@ class Itunes
     puts "="*100
     puts message
     puts "="*100
+  end
+
+  def dump( a_hash, filename = 'dump' )
+    filename = filename + '.out'
+    puts ">>> File dumped to #{filename}"
+    File.open(filename,'w+') do |f|
+      f.write(PP.pp(self,f))
+    end
   end
 end
