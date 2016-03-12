@@ -121,10 +121,14 @@ class Itunes
   end
 
   def initialize( itunes_path = TEST_ITUNES_PATH )
-    @itunes_path = itunes_path
-    @itunes_hash = Plist::parse_xml( itunes_path )
-    @tracks_hash = get_audio_tracks
-    @albums = get_albums
+    if File.exists? itunes_path
+      @itunes_path = itunes_path
+      @itunes_hash = Plist::parse_xml( itunes_path )
+      @tracks_hash = get_audio_tracks
+      @albums = get_albums
+    else
+      raise "Can't find #{itunes_path}"
+    end
   end
 
   def get_audio_tracks
