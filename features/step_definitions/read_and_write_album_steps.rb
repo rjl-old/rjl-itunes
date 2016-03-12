@@ -21,10 +21,10 @@ When(/^I set grouping to "([^"]*)" and genre to "([^"]*)" and save$/) do |groupi
   $album = itunes.albums.first
   $album.grouping = grouping
   $album.genre = genre
+  itunes.save
 end
 
 Then(/^The reloaded grouping and genre are "([^"]*)" and genre to "([^"]*)"$/) do |grouping, genre|
-  itunes.save
   itunes_new = Itunes.new
   $album = itunes_new.albums.first
   expect($album.grouping).to eq(grouping)
