@@ -15,3 +15,6 @@ file_after.txt
 file_before.txt
 out/@itunes_hash after save.txt
 out/Initialised album.txt
+log.txt
+bin/tracklister.rb
+bin/rjl_itunes.rb
