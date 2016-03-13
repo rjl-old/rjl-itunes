@@ -18,3 +18,4 @@ out/Initialised album.txt
 log.txt
 bin/tracklister.rb
 bin/rjl_itunes.rb
+dump

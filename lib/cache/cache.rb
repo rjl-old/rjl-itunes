@@ -23,7 +23,7 @@ class Cache
   end
 
   def make_key( album_obj)
-    return "#{album_obj.artist}/#{album_obj.album}"
+    return "#{album_obj.artist}/#{album_obj.title}"
   end
 
   def exists?( album_obj )

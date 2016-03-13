@@ -1,63 +1,71 @@
+require_relative 'track'
+
 class Album
 
   attr_reader   :artist
-  attr_reader   :album
-  attr_reader   :long_name  # "artist / album"
-  attr_accessor :grouping
+  attr_reader   :title
   attr_accessor :genre
-  attr_reader   :track_type
-  attr_reader   :album_hash
-  attr_reader   :location
+  attr_reader   :tracks
+  attr_reader   :long_name  # "artist / album"
 
-  def initialize album_hash
-    @album_hash = album_hash
-    parse_album_hash
+  def initialize track_hash_list
+    @track_hash_list = track_hash_list
+    @tracks = get_tracks( track_hash_list )
   end
 
-  # We set the properties of the album to be the properties of the first
-  # track in the album. This is fragile and will fail for mixed albums e.g.
-  # local and remote tracks.
-  # TODO make this more robust e.g. check for inconsistencies and flag
-  def parse_album_hash
-    track_id, track_hash = album_hash.first
-    @artist = track_hash["Artist"]
-    @album = track_hash["Album"]
-    @long_name = "#{@artist}, '#{@album}'"
-    @genre = track_hash["Genre"]
-    @location = track_hash["Location"]
+  # counts the number of different values of 'parameter_name' in 'track_list'
+  def unique?( track_list, parameter_name)
+    values = Hash.new
+    track_list.each do |track|
+      values[track.send(parameter_name)] = '*'
+    end
+    return values.keys.count == 1
   end
 
+  # returns value of 'parameter_name' from 'track_list' if unique, or 'mixed'
+  def get_parameter( track_list, parameter_name )
+    if unique?(track_list, parameter_name)
+      return track_list[0].send(parameter_name)
+    else
+      return "mixed"
+    end
+  end
+
+  def artist
+    return get_parameter( @tracks, "artist")
+  end
+
+  def title
+    return get_parameter( @tracks, "album")
+  end
+
+  def genre
+    return get_parameter( @tracks, "genre")
+  end
+
+  def get_tracks( track_hash_list )
+    track_list = []
+    track_hash_list.each do |track_hash|
+      track_list << Track.new(track_hash)
+    end
+    return track_list
+  end
+
+  # write new genre to filesystem
   def genre=( new_genre )
-    # write new genre to filesystem
-    @album_hash.each do |track_id, track_hash|
-      if track_hash["Track Type"] == "File"
-        begin
-          file_path = URI.decode(track_hash["Location"]).gsub('file://','')
-          track = Track.new file_path
-          track.genre = new_genre
-          $log.info "Set #{@long_name} genre to #{new_genre}"
-        rescue
-          raise "Couldn't get filepath for #{track_hash}"
-        end
-      else
-        # process Remote file
-        $log.info "****** #{@long_name}"
-      end
+    @tracks.each do |track|
+      track.genre = new_genre
     end
   end
 
+  # write new comment to filesystem
   def comment=( new_comment )
-    # write new genre to filesystem
-    @album_hash.each do |track_id, track_hash|
-      if track_hash["Track Type"] == "File"
-        file_path = URI.decode(track_hash["Location"]).gsub('file://','')
-        track = Track.new file_path
-        track.comment = new_comment
-        $log.info "Set #{@long_name} comment to #{new_comment}"
-      else
-        # process Remote file
-      end
+    @tracks.each do |track|
+      track.comment = new_comment
     end
   end
 
+  def long_name
+    return "#{self.artist}, '#{self.title}'"
+  end
 end
