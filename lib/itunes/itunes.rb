@@ -10,6 +10,7 @@ require 'plist'    # https://github.com/bleything/plist
 require 'pp'       # debugging only
 require 'taglib'   # http://robinst.github.io/taglib-ruby/
 require 'uri'
+require_relative 'album'
 
 class Itunes
 
@@ -22,66 +23,6 @@ class Itunes
   attr_reader :itunes_plist
   attr_reader :itunes_path
   attr_reader :itunes_hash
-
-  class Album < Itunes
-
-    attr_reader   :artist
-    attr_reader   :album
-    attr_accessor :grouping
-    attr_accessor :genre
-
-    attr_reader   :album_hash
-
-    def initialize album_hash
-      @album_hash = album_hash
-      parse_album_hash
-    end
-
-    def parse_album_hash
-      track_id, track_hash = album_hash.first
-      @artist = track_hash["Artist"]
-      @album = track_hash["Album"]
-      @grouping = track_hash["Grouping"]
-      @genre = track_hash["Genre"]
-      # if @album == "Retour - Best of Züri West"
-      #   puts track_hash
-      #   puts "="*100
-      # end
-    end
-
-    def genre=( new_genre )
-      @genre = new_genre
-
-      # change the genre for each track in the album
-      new_album_hash = {}
-      @album_hash.each do |track_id, track_hash|
-        track_hash["Genre"] = new_genre
-        new_album_hash[track_id] = track_hash
-      end
-      @album_hash = new_album_hash
-
-      # write new genre to filesystem
-      @album_hash.each do |track_id, track_hash|
-        file_path = URI.decode(track_hash["Location"]).gsub('file://','')
-        track = Track.new file_path
-        puts file_path
-        puts track.genre
-        track.genre = new_genre
-
-      end
-    end
-
-    def grouping=( new_grouping )
-      new_album_hash = {}
-      @album_hash.each do |track_id, track_hash|
-        track_hash["Grouping"] = new_grouping
-        new_album_hash[track_id] = track_hash
-      end
-      @album_hash = new_album_hash
-      parse_album_hash
-      # update iTunes. Somehow   :(
-    end
-  end
 
   class Track
 
@@ -115,6 +56,21 @@ class Itunes
       TagLib::FileRef.open(@filepath) do |fileref|
         tag = fileref.tag
         tag.genre = str
+        fileref.save
+      end
+    end
+
+    def comment
+      TagLib::FileRef.open(@filepath) do |fileref|
+        tag = fileref.tag
+        return tag.comment
+      end
+    end
+
+    def comment=(str)
+      TagLib::FileRef.open(@filepath) do |fileref|
+        tag = fileref.tag
+        tag.comment = str
         fileref.save
       end
     end
