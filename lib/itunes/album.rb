@@ -1,4 +1,4 @@
-class Album 
+class Album
 
   attr_reader   :artist
   attr_reader   :album
@@ -22,7 +22,7 @@ class Album
     track_id, track_hash = album_hash.first
     @artist = track_hash["Artist"]
     @album = track_hash["Album"]
-    @long_name = "#{@artist} / #{@album}"
+    @long_name = "#{@artist}, '#{@album}'"
     @genre = track_hash["Genre"]
     @location = track_hash["Location"]
   end
