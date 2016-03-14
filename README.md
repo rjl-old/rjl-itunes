@@ -1,4 +1,4 @@
-# Rjl_itunes 0.1
+# Rjl_itunes 0.2
 
 iTunes client for manipulating track metadata.
 
@@ -36,6 +36,7 @@ This might wreck your iTunes library.
 ## Changes
 
 0.1 Reads the XML library and modifies file ID3 tags.
+0.2 Refactored to use Applescript interface
 
 ## Copyright
 
