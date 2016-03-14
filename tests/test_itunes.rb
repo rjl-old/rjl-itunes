@@ -2,7 +2,7 @@ require 'test/unit'
 require 'itunes'
 
 ITUNES_PATH_TEST = '/Users/richardlyon/Music/Ruby-iTunes/iTunes Library.xml'
-$itunes = Itunes.new ITUNES_PATH_TEST
+$itunes = Itunes.new
 
 class TestItunes < Test::Unit::TestCase
 
@@ -10,43 +10,44 @@ class TestItunes < Test::Unit::TestCase
     assert_equal(3, $itunes.albums.count)
   end
 
-  def test_album_artist
+  def test_get_album_artist
     album = $itunes.albums[0]
-    assert_equal("A Perfect Circle", album.artist)
+    assert_equal("Benny Green", album.artist)
   end
 
-  def test_album_title
+  def test_get_album_title
     album = $itunes.albums[0]
-    assert_equal("Thirteenth Step", album.title)
+    assert_equal("These Are Soulful Days", album.title)
   end
 
-  def test_album_genre
+  def test_get_album_genre
     album = $itunes.albums[0]
-    assert_equal("Pop/Rock", album.genre)
-  end
-
-  def test_set_album_genre
-    album = $itunes.albums[0]
-    original_genre = album.genre
-    test_genre = "TEST GENRE" + Time.now.strftime("%d/%m/%Y %H:%M")
-    album.genre = test_genre
-    assert_equal( test_genre, album.genre )
-    album.genre = original_genre
+    assert_equal("Jazz [Guitar Jazz]", album.genre)
   end
 
   def test_get_tracks
     tracks = $itunes.albums[0].tracks
-    assert_equal(12, tracks.count)
+    assert_equal(8, tracks.count)
   end
 
   def test_get_track_name
     track = $itunes.albums[0].tracks[0]
-    assert_equal("The Package", track.name)
+    assert_equal("Virgo", track.name)
   end
 
   def test_get_track_genre
     track = $itunes.albums[0].tracks[0]
-    assert_equal("Pop/Rock", track.genre)
+    assert_equal("Jazz [Guitar Jazz]", track.genre)
+  end
+
+  def test_album_protected
+    album = $itunes.albums[0] # => "Benny Green / These are Soulful Days"
+    assert_equal( album.protected?, true)
+  end
+
+  def test_album_not_protected
+    album = $itunes.albums[1] # => "A Perfect Circle / Thirteenth Step"
+    assert_equal( album.protected?, false)
   end
 
   def test_set_track_genre
@@ -58,13 +59,12 @@ class TestItunes < Test::Unit::TestCase
     track.genre = original_genre
   end
 
-  def test_set_track_comment
-    track = $itunes.albums[0].tracks[0]
-    original_comment = track.comment
-    test_comment = "TEST COMMENT" + Time.now.strftime("%d/%m/%Y %H:%M")
-    track.comment = test_comment
-    assert_equal( test_comment, track.comment )
-    track.comment = original_comment
+  def test_set_album_genre
+    album = $itunes.albums[0]
+    original_genre = album.genre
+    test_genre = "TEST GENRE" + Time.now.strftime("%d/%m/%Y %H:%M")
+    album.genre = test_genre
+    assert_equal( test_genre, album.genre )
+    album.genre = original_genre
   end
-
 end

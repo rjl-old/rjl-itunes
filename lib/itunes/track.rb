@@ -1,57 +1,38 @@
-require 'uri'
-require 'taglib'
+#!/usr/bin/env ruby
+#
+# = Track
+#
+# Copyright 2016 Richard Lyon
+# Distributed under the MIT license
+#
 
-# Represents an audio file in the file system
 class Track
-
-  def initialize(track_hash)
-    @filepath = parse_location(track_hash["Location"])
-    @track_hash = track_hash
-  end
-
-  def parse_location( location )
-    return URI.decode(location).gsub('file://','')
-  end
-
-  def artist
-    return @track_hash["Artist"]
+  def initialize track_obj
+    @track_obj = track_obj
   end
 
   def album
-    return @track_hash["Album"]
+    return @track_obj.album.get
+  end
+
+  def artist
+    return @track_obj.artist.get
   end
 
   def name
-    return @track_hash["Name"]
+    return @track_obj.name.get
   end
 
   def genre
-    TagLib::FileRef.open(@filepath) do |fileref|
-      tag = fileref.tag
-      return tag.genre
-    end
+    return @track_obj.genre.get
   end
 
   def genre=(str)
-    TagLib::FileRef.open(@filepath) do |fileref|
-      tag = fileref.tag
-      tag.genre = str
-      fileref.save
-    end
+    @track_obj.genre.set(str)
   end
 
-  def comment
-    TagLib::FileRef.open(@filepath) do |fileref|
-      tag = fileref.tag
-      return tag.comment
-    end
-  end
-
-  def comment=(str)
-    TagLib::FileRef.open(@filepath) do |fileref|
-      tag = fileref.tag
-      tag.comment = str
-      fileref.save
-    end
+  def tags
+    groupings = @track_obj.grouping.get
+    return groupings.gsub("][", ",")[1..-2].split(',')
   end
 end
