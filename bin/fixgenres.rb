@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-# tracklister.rb
+# fixgenres.rb
 # list iTunes track data
 
 libdir = File.expand_path(File.dirname(__FILE__) + '/../lib')
