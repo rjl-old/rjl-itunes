@@ -27,12 +27,28 @@ class Track
     @track_obj.artist.set(str)
   end
 
+  def sort_artist
+    return @track_obj.sort_artist.get
+  end
+
+  def sort_artist=(str)
+    @track_obj.sort_artist.set(str)
+  end
+
   def album
     return @track_obj.album.get
   end
 
   def album=(str)
     @track_obj.album.set(str)
+  end
+
+  def sort_album
+    return @track_obj.sort_album.get
+  end
+
+  def sort_album=(str)
+    @track_obj.sort_album.set(str)
   end
 
   def album_artist
@@ -73,6 +89,14 @@ class Track
 
   def comment=(str)
     @track_obj.comment.set(str)
+  end
+
+  def disc_number
+    return @track_obj.disc_number.get
+  end
+
+  def disc_number=(int)
+    @track_obj.disc_number.set(int)
   end
 
   def compilation?
