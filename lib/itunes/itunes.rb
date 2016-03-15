@@ -14,14 +14,18 @@ class Itunes
 
   attr_accessor :albums
   attr_reader   :tags
-  def initialize
-    @tracks = get_tracks
+  def initialize( playlist = nil )
+    @tracks = get_tracks( playlist )
     @albums = get_albums(@tracks)
   end
 
-  def get_tracks
+  def get_tracks( playlist = nil)
     track_list = []
-    tracks = app("iTunes").library_playlists[1].tracks[its.video_kind.eq(:none)].get
+    if playlist.nil?
+      tracks = app("iTunes").playlists[1].tracks[its.video_kind.eq(:none)].get
+    else
+      tracks = app("iTunes").playlists[playlist].tracks[its.video_kind.eq(:none)].get
+    end
     tracks.each do |track_obj|
       track_list << Track.new(track_obj)
     end
