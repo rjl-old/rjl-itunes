@@ -33,7 +33,7 @@ class Itunes
   end
 
   def make_key( artist, album )
-    return "#{artist}/#{album}"
+    return "#{artist}__#{album}"
   end
 
   def get_albums( track_list )
@@ -44,7 +44,7 @@ class Itunes
       tracks_hash[key] << track
     end
     tracks_hash.each do |key, tracks|
-      artist, title = key.split('/')
+      artist, title = key.split('__')
       album_list << Album.new(artist, title, tracks)
     end
     return album_list

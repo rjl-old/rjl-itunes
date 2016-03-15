@@ -6,53 +6,51 @@
 libdir = File.expand_path(File.dirname(__FILE__) + '/../lib')
 $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
-TEST = '/Users/richardlyon/Music/Ruby-iTunes/iTunes Library.xml'
-LIVE = '/Users/richardlyon/Music/iCloud-Music-Library/iTunes Library.xml'
-
 require 'itunes'
 require 'allmusic'
 require 'cache'
-require 'YAML'
+require 'ruby-progressbar' # https://github.com/jfelchner/ruby-progressbar/wiki
 
-itunes = Itunes.new LIVE
+itunes = Itunes.new
 $cache = Cache.new
 
+progressbar = ProgressBar.create(
+  :format => '%e |%b>>%i| %p%% %t',
+  :title => "Albums",
+  :total => itunes.albums.count)
+
+# retrieve album metadata, either from the cache or from allmusic
 def get_metadata( album )
   genres = nil
   styles = nil
-  # check if it's cached
   if $cache.exists? album
-    # if it is, get the data from the cache
-    puts "  Retrieving from cache"
     genres = $cache.genres album
     styles = $cache.styles album
   else
-    # otherwise, get metatdata from allmusic and cache
-    puts "  Retrieving from allmusic.com"
     allmusic = Allmusic.new album.artist, album.title
     allmusic.get_meta
     genres = allmusic.genres
     styles = allmusic.styles
-    # cache the data
     $cache.update album, genres, styles
   end
   return genres, styles
 end
 
+# make the genre string e.g. "Jazz [Guitar Jazz]"
+# TODO improve this algorith e.g. select most frequent
 def build_genre( genres, styles )
   genre = ("" if genres.nil?) || genres[0]
   style = ("" if styles.nil?) || styles[0]
   return "#{genre} [#{style}]"
 end
 
+# main loop - fix album genre unless tagged 'proteected'
 itunes.albums.each do |album|
-  puts "> Processing #{album.long_name}"
-  genres, styles = get_metadata( album )
-  new_genre = build_genre( genres, styles )
-  puts "  Genres: #{genres}"
-  puts "  Styles: #{styles}"
-  puts "  New   : #{new_genre} "
-
-  album.genre = new_genre
-
+  progressbar.increment
+  unless album.protected?
+    genres, styles = get_metadata( album )
+    new_genre = build_genre( genres, styles )
+    # album.genre = new_genre
+    progressbar.log "#{album.artist}, '#{album.title}' -> #{new_genre}"
+  end
 end
