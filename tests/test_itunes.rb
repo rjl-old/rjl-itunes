@@ -5,6 +5,7 @@ ITUNES_PATH_TEST = '/Users/richardlyon/Music/Ruby-iTunes/iTunes Library.xml'
 $itunes = Itunes.new
 $itunes_test = Itunes.new( "TEST" )
 $itunes_test_protected = Itunes.new( "TEST-PROTECTED" )
+$itunes_test_unprotected = Itunes.new( "TEST-UNPROTECTED" )
 $itunes_test_compilation = Itunes.new( "TEST-COMPILATION" )
 
 class TestItunes < Test::Unit::TestCase
@@ -79,7 +80,7 @@ class TestItunes < Test::Unit::TestCase
   end
 
   def test_album_not_protected
-    album = $itunes.albums[1] # => "A Perfect Circle / Thirteenth Step"
+    album = $itunes_test_unprotected.albums[0] # => "A Perfect Circle / Thirteenth Step"
     assert_equal( album.protected?, false)
   end
 
@@ -103,9 +104,19 @@ class TestItunes < Test::Unit::TestCase
     set_parameter( track, 'artist')
   end
 
+  def test_set_track_sort_artist
+    track = $itunes.albums[0].tracks[0]
+    set_parameter( track, 'sort_artist')
+  end
+
   def test_set_track_album
     track = $itunes.albums[0].tracks[0]
     set_parameter( track, 'album')
+  end
+
+  def test_set_track_sort_album
+    track = $itunes.albums[0].tracks[0]
+    set_parameter( track, 'sort_album')
   end
 
   def test_set_track_album_artist
