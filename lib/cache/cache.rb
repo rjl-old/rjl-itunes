@@ -5,6 +5,7 @@
 # Copyright 2016 Richard Lyon
 # Distributed under the MIT license
 #
+require 'YAML'
 
 class Cache
   attr_reader   :cache_name
