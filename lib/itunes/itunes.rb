@@ -12,12 +12,15 @@ require_relative 'album'
 
 class Itunes
 
-  attr_accessor :albums
+  attr_reader   :albums
+  attr_reader   :tracks
   attr_reader   :tags
   def initialize( playlist = nil )
     @tracks = get_tracks( playlist )
     @albums = get_albums(@tracks)
   end
+
+  private
 
   def get_tracks( playlist = nil)
     track_list = []
