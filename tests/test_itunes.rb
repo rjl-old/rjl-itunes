@@ -124,6 +124,11 @@ class TestItunes < Test::Unit::TestCase
     set_parameter( track, 'album_artist')
   end
 
+  def test_set_track_sort_album_artist
+    track = $itunes.albums[0].tracks[0]
+    set_parameter( track, 'sort_album_artist')
+  end
+
   def test_set_track_composer
     track = $itunes.albums[0].tracks[0]
     set_parameter( track, 'composer')
