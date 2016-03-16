@@ -14,7 +14,6 @@ class Track
   def name
     return @track_obj.name.get
   end
-
   def name=(str)
     @track_obj.name.set(str)
   end
@@ -22,7 +21,6 @@ class Track
   def artist
     return @track_obj.artist.get
   end
-
   def artist=(str)
     @track_obj.artist.set(str)
   end
@@ -30,7 +28,6 @@ class Track
   def sort_artist
     return @track_obj.sort_artist.get
   end
-
   def sort_artist=(str)
     @track_obj.sort_artist.set(str)
   end
@@ -38,7 +35,6 @@ class Track
   def album
     return @track_obj.album.get
   end
-
   def album=(str)
     @track_obj.album.set(str)
   end
@@ -46,7 +42,6 @@ class Track
   def sort_album
     return @track_obj.sort_album.get
   end
-
   def sort_album=(str)
     @track_obj.sort_album.set(str)
   end
@@ -54,15 +49,20 @@ class Track
   def album_artist
     return @track_obj.album_artist.get
   end
-
   def album_artist=(str)
     @track_obj.album_artist.set(str)
+  end
+
+  def sort_album_artist
+    return @track_obj.sort_album_artist.get
+  end
+  def sort_album_artist=(str)
+    @track_obj.sort_album_artist.set(str)
   end
 
   def composer
     return @track_obj.composer.get
   end
-
   def composer=(str)
     @track_obj.composer.set(str)
   end
@@ -70,7 +70,6 @@ class Track
   def grouping
     return @track_obj.grouping.get
   end
-
   def grouping=(str)
     @track_obj.grouping.set(str)
   end
@@ -78,7 +77,6 @@ class Track
   def genre
     return @track_obj.genre.get
   end
-
   def genre=(str)
     @track_obj.genre.set(str)
   end
@@ -86,7 +84,6 @@ class Track
   def comment
     return @track_obj.comment.get
   end
-
   def comment=(str)
     @track_obj.comment.set(str)
   end
@@ -94,7 +91,6 @@ class Track
   def disc_number
     return @track_obj.disc_number.get
   end
-
   def disc_number=(int)
     @track_obj.disc_number.set(int)
   end
