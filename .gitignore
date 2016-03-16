@@ -19,3 +19,8 @@ log.txt
 bin/tracklister.rb
 bin/rjl_itunes.rb
 dump
+albums.db
+allmusic.log
+bin/play_script.rb
+bin/temp.rb
+sandpit
