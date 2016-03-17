@@ -24,3 +24,5 @@ allmusic.log
 bin/play_script.rb
 bin/temp.rb
 sandpit
+albums_bak.db
+.yardoc
