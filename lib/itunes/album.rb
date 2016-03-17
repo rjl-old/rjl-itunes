@@ -8,12 +8,16 @@
 
 require_relative 'track'
 
+# Represents an album in Apple's 'iTunes' application
 class Album
   attr_accessor :artist
   attr_accessor :title
   attr_accessor :tracks
 
-  def initialize( artist = nil, title = nil, tracks = [])
+  # @param [String] artist the album artist
+  # @param [String] title the album title
+  # @param [List of Track] tracks  the tracks
+  def initialize( artist: nil, title: nil, tracks: [])
     @artist = artist
     @title = title
     @tracks = tracks
