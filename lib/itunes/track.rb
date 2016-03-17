@@ -11,6 +11,10 @@ class Track
     @track_obj = track_obj
   end
 
+  def database_id
+    return @track_obj.database_ID.get
+  end
+
   def name
     return @track_obj.name.get
   end
