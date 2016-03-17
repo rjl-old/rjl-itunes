@@ -26,3 +26,4 @@ bin/temp.rb
 sandpit
 albums_bak.db
 .yardoc
+tests/test_itunes.rb
