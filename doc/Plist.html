@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Module: Plist
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!Plist.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index (P)</a> &raquo;
+    
+    
+    <span class="title">Plist</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Module: Plist
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/plist/parser.rb<span class="defines">,<br />
+  lib/plist.rb,<br /> lib/plist/generator.rb</span>
+</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<h1 id="label-plist">plist</h1>
+
+<p>Copyright 2006-2010 Ben Bleything and Patrick May Distributed under the MIT
+License</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+  
+    
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Plist/Emit.html" title="Plist::Emit (module)">Emit</a></span>
+    
+  
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Plist/Listener.html" title="Plist::Listener (class)">Listener</a></span>, <span class='object_link'><a href="Plist/PArray.html" title="Plist::PArray (class)">PArray</a></span>, <span class='object_link'><a href="Plist/PData.html" title="Plist::PData (class)">PData</a></span>, <span class='object_link'><a href="Plist/PDate.html" title="Plist::PDate (class)">PDate</a></span>, <span class='object_link'><a href="Plist/PDict.html" title="Plist::PDict (class)">PDict</a></span>, <span class='object_link'><a href="Plist/PFalse.html" title="Plist::PFalse (class)">PFalse</a></span>, <span class='object_link'><a href="Plist/PInteger.html" title="Plist::PInteger (class)">PInteger</a></span>, <span class='object_link'><a href="Plist/PKey.html" title="Plist::PKey (class)">PKey</a></span>, <span class='object_link'><a href="Plist/PList.html" title="Plist::PList (class)">PList</a></span>, <span class='object_link'><a href="Plist/PReal.html" title="Plist::PReal (class)">PReal</a></span>, <span class='object_link'><a href="Plist/PString.html" title="Plist::PString (class)">PString</a></span>, <span class='object_link'><a href="Plist/PTag.html" title="Plist::PTag (class)">PTag</a></span>, <span class='object_link'><a href="Plist/PTrue.html" title="Plist::PTrue (class)">PTrue</a></span>, <span class='object_link'><a href="Plist/StreamParser.html" title="Plist::StreamParser (class)">StreamParser</a></span>
+    
+  
+</p>
+
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="VERSION-constant" class="">VERSION =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>3.1.0</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#parse_xml-class_method" title="parse_xml (class method)">+ (Object) <strong>parse_xml</strong>(filename_or_xml) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Note that I don&#39;t use these two elements much:.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="parse_xml-class_method">
+  
+    + (<tt>Object</tt>) <strong>parse_xml</strong>(filename_or_xml) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Note that I don&#39;t use these two elements much:</p>
+
+<pre class="code ruby"><code class="ruby">+ Date elements are returned as DateTime objects.
++ Data elements are implemented as Tempfiles</code></pre>
+
+<p>Plist::parse_xml will blow up if it encounters a Date element. If you
+encounter such an error, or if you have a Date element which can&#39;t be
+parsed into a Time object, please send your plist file to plist@hexane.org
+so that I can implement the proper support.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+25
+26
+27
+28
+29
+30
+31</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/plist/parser.rb', line 25</span>
+
+<span class='kw'>def</span> <span class='const'>Plist</span><span class='op'>::</span><span class='id identifier rubyid_parse_xml'>parse_xml</span><span class='lparen'>(</span> <span class='id identifier rubyid_filename_or_xml'>filename_or_xml</span> <span class='rparen'>)</span>
+  <span class='id identifier rubyid_listener'>listener</span> <span class='op'>=</span> <span class='const'>Listener</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='comment'>#parser = REXML::Parsers::StreamParser.new(File.new(filename), listener)
+</span>  <span class='id identifier rubyid_parser'>parser</span> <span class='op'>=</span> <span class='const'>StreamParser</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_filename_or_xml'>filename_or_xml</span><span class='comma'>,</span> <span class='id identifier rubyid_listener'>listener</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_parser'>parser</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span>
+  <span class='id identifier rubyid_listener'>listener</span><span class='period'>.</span><span class='id identifier rubyid_result'>result</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Thu Mar 17 07:38:48 2016 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.3.0).
+</div>
+
+  </body>
+</html>
