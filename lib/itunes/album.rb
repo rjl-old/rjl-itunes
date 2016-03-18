@@ -9,41 +9,53 @@
 require_relative 'track'
 require_relative 'utils'
 
-# Represents an album in Apple's 'iTunes' application
+# Represents an album in Apple's 'iTunes' application.
 class Album
-  attr_accessor :artist
-  attr_accessor :title
-  attr_accessor :tracks
 
-  # @param [String] artist the album artist
-  # @param [String] title the album title
+  attr_reader :album_artist
+  attr_reader :title
+  attr_accessor :genre
+  attr_reader :protected?   # @return [Boolean] is the album protected from changes?
+  attr_reader :tracks       # @return [List of Track] the album tracks
+
   # @param [List of Track] tracks  the tracks
-  def initialize( artist: nil, title: nil, tracks: [])
-    @artist = artist
-    @title = title
+  def initialize( tracks: [])
     @tracks = tracks
   end
 
+  # @return [String artist name] the album artist if only one
+  # @return [String 'Various Artists'] if more than one
+  def album_artist
+    album_artist = nil
+    if unique?(@tracks, "artist" )
+      album_artist = @tracks[0].artist
+    else
+      album_artist = 'Various Artists'
+    end
+    return album_artist
+  end
+
+  # @return [String] album title
+  def title
+    return @tracks[0].album
+  end
+
+  # @return [String] album genre
   def genre
-    if unique?( "genre" )
+    if unique?( @tracks, "genre" )
       return @tracks[0].genre
     else
       return 'mixed'
     end
   end
 
+  # @param [String] album genre
   def genre=(str)
-    @tracks.each do |track|
-      track.genre = str
+    if !self.protected?
+      @tracks.each do |track|
+        track.genre = str
+      end
     end
-  end
-
-  def unique?( parameter_name )
-    values = []
-    @tracks.each do |track|
-      values << track.send( parameter_name )
-    end
-    return values.uniq.length == 1
   end
 
   def protected?
