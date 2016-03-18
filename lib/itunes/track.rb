@@ -106,4 +106,8 @@ class Track
   def tags
     return self.grouping.gsub("][", ",")[1..-2].split(',')
   end
+
+  def to_s
+    puts "#{self.artist} - #{self.name}"
+  end
 end

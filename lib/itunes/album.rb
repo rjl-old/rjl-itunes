@@ -55,4 +55,13 @@ class Album
     end
     return protected
   end
+
+  def to_s
+    puts "-"*50
+    puts "> #{@album_artist}, '#{@title}'"
+    @tracks.each do |track|
+      puts "  #{track.name}"
+    end
+    puts "="*50
+  end
 end
