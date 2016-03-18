@@ -7,6 +7,7 @@
 #
 
 require_relative 'track'
+require_relative 'utils'
 
 # Represents an album in Apple's 'iTunes' application
 class Album
