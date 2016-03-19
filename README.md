@@ -7,7 +7,7 @@
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'wanker'
+gem 'rjl-itunes'
 ```
 
 And then execute:
