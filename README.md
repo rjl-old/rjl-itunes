@@ -1,10 +1,14 @@
-# Itunes 0.1
+# rjl-itunes 0.1
 
-`Itunes` is a Ruby client for Apple's iTunes application. It's designed to support utilities that  make it both easier and more pleasant to maintain your collection of albums.
+`rjl-itunes` is a Ruby client for Apple's iTunes application. It's designed to support utilities that  make it both easier and more pleasant to maintain your collection of albums.
 
 ## Installation
 
     gem install rjl-itunes
+
+## Dependencies
+
+rjl-itunes uses [rjl-allmusic](https://github.com/richardjlyon/allmusic) to generate genre information for tracks.
 
 ## Usage
 
@@ -15,7 +19,7 @@
     itunes = Itunes.new
 
     itunes.albums.each do |album|
-        puts "#{album.artist}, '#{album.title}'"
+        puts "#{album.album_artist}, '#{album.title}'"
         album.tracks.each do |track|
           puts track.title, track.genre
         end
@@ -30,22 +34,32 @@ See `/examples` for more uses. See 'Warning' below.
 
 ## How it works
 
-`Itunes` uses applescript to interact with your currently active `Itunes` library. Albums and tracks can be manipulated in a straightforward manner. Playlists and Playlist Folders can be created and destroyed, and albums added to them.
+`itunes` uses applescript to interact with your currently active Itunes library. Albums can be manipulated in a straightforward manner. Playlists and Playlist Folders can be created and destroyed, and albums added to them.
+
+### Genres
+
+Album genres are sometimes divided into sub-genres. [Allmusic.com](allmusic.com) refers to these sub-genres as 'styles', and can return several genres and styles for an album. iTunes provides the field `genre` for specifying genre and allows albums to be sorted by this field in the 'Albums' view. It also provides the field `grouping`, but only allows albums to be sorted by this via the column Browser in the 'Songs' view. There is no straightforward way of mapping multiple genres and styles into this these fields.
+
+`rjl-itunes` computes a single string to represents the album's genre from the genres and styles obtained from [Allmusic.com](allmusic.com). The frequency of each genre and style in the whole library is calculated. For each album that has more than one genre or style, the highest frequency genre and style is chosen and combined.
 
 ### Tags
 
-Tags can be used to control how `iTunes` interacts with your library. Tags are encoded as `[tag1][tag2]` in the track's `Groupings` field in iTunes (this is likely to change in future versions).
+Tags can be used to control how `rjl-itunes` interacts with your library. Tags are encoded as `[tag1][tag2]` in the track's `groupings` field in iTunes (this is likely to change in future versions).
 
 Reserved tags are as follows:
 
-#### `[protected]`
-Track is excluded from processing. Use this if, for example, you have set your own genre and do not want `Itunes` to change it.
+* `[protected]`
+Track is excluded from processing. Use this if, for example, you have set your own genre and do not want `rjl-itunes` to change it.
 
 ## Warning
 
 This might wreck your iTunes library in two ways. You might use commands that accidentally hose your library. Or the commands may have unknown side-effects. Always back up your library up first.
 
-`Itunes` tries to be efficient in the way it interacts with iTunes, but Applescript is something of a dark art (to me). Expect scripts to mysteriously slow down, especially with large changes. [Ruby Progressbar](https://github.com/jfelchner/ruby-progressbar/wiki) is your friend.
+`rjl-itunes` tries to be efficient in the way it interacts with iTunes, but Applescript is something of a dark art (to me). Expect scripts to mysteriously slow down, especially with large changes. [Ruby Progressbar](https://github.com/jfelchner/ruby-progressbar/wiki) is your friend.
+
+## Testing
+
+RSpec tests are provided adn a sample library. The tests will only work with this library.
 
 ## Changes
 
@@ -54,7 +68,7 @@ Initial release.
 
 ## Acknowledgements
 
-`Itunes` uses [Brendan Thompson's Ruby fork](https://github.com/BrendanThompson/rb-scpt) of the SF Project [appscript](http://appscript.sourceforge.net/rb-appscript/index.html) for accessing itunes via applescript.
+`rjl-itunes` uses [Brendan Thompson's Ruby fork](https://github.com/BrendanThompson/rb-scpt) of the SF Project [appscript](http://appscript.sourceforge.net/rb-appscript/index.html) for accessing itunes via applescript.
 
 ## Contacting me
 
@@ -62,5 +76,5 @@ You can contact me at r i c h l y o n @ m a c . c o m
 
 ## Copyright
 
-Copyright (c) 2016 Richard Lyon. See LICENSE.txt for
+Copyright (c) 2016 Richard Lyon. See {file:LICENSE.txt LICENSE} for
 further details.
