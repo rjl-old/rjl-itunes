@@ -17,7 +17,9 @@ module RJL
     # closes it on exit.
     # @param [Itunes] itunes the itunes client to generate metadata for
     def initialize( itunes )
-      @db = Daybreak::DB.new 'cache.db', :default => {}
+
+      cache_path = File.join((File.dirname __dir__), 'cache/cache.db')
+      @db = Daybreak::DB.new cache_path, :default => {}
       @itunes = itunes
       at_exit { @db.close }
     end
