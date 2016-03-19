@@ -1,4 +1,4 @@
-require_relative "../lib/itunes"
+require 'spec_helper'
 
 describe Playlist do
   before :each do

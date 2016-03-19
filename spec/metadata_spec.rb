@@ -1,5 +1,4 @@
-require_relative "../lib/rjl"
-# require_relative "../lib/metadata"
+require 'spec_helper'
 
 describe RJL::Metadata do
 

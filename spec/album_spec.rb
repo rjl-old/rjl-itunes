@@ -1,4 +1,4 @@
-require_relative "../lib/rjl"
+require 'spec_helper'
 
 describe RJL::Album do
 
