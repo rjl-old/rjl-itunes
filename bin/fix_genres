@@ -9,11 +9,15 @@
 # (c) Richard Lyon 15 March, 2016
 
 $: << File.join(File.dirname(__FILE__), '..', 'lib')
-require 'rjl/itunes'
+require 'rjl'
+
+logger = get_logger
+logger.info "fix_genres: " "#{"="*80}"
 
 # require 'metadata'
 require 'ruby-progressbar' # https://github.com/jfelchner/ruby-progressbar/wiki
 
+puts "\n> Updating iTunes library genres from Allmusic.com...\n\n"
 itunes = RJL::Itunes.new
 
 progressbar = ProgressBar.create(
@@ -22,14 +26,22 @@ progressbar = ProgressBar.create(
   :total => itunes.albums.count)
 
 # main loop - fix album genre unless tagged 'proteected'
+count = 0
 itunes.albums.each do |album|
   metadata = RJL::Metadata.new( album: album )
-  progressbar.increment
   unless album.protected?
+    current_genre = album.genre
     new_genre = metadata.genre( album )
-    unless new_genre == ""
+
+    unless new_genre == "" || (current_genre == new_genre )
       album.genre = metadata.genre( album )
       progressbar.log "#{album.album_artist}, '#{album.title}' -> #{new_genre}"
+      logger.info "fix_genres: " "#{album.album_artist}, '#{album.title}' -> #{new_genre}"
+      count += 1
     end
   end
+  progressbar.increment
 end
+
+puts "\n> Attempted to updated genres for #{count} tracks (iCloud tracks not modified)"
+puts "> See '/lib/logs/log.log' for details"
