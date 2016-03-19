@@ -8,64 +8,28 @@
 
 # (c) Richard Lyon 15 March, 2016
 
-libdir = File.expand_path(File.dirname(__FILE__) + '/../lib')
-$LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
+$: << File.join(File.dirname(__FILE__), '..', 'lib')
+require 'rjl/itunes'
 
-require 'itunes'
-require 'allmusic'
+# require 'metadata'
 require 'ruby-progressbar' # https://github.com/jfelchner/ruby-progressbar/wiki
-require 'daybreak'         # http://propublica.github.io/daybreak/
 
-itunes = Itunes.new
-$db = Daybreak::DB.new "albums.db", :default => {}
+itunes = RJL::Itunes.new
 
 progressbar = ProgressBar.create(
   :format => '%e |%b>>%i| %p%% %t',
   :title => "Tracks",
   :total => itunes.albums.count)
 
-# e.g. "ABBA", "Gold" -> "ABBA__Gold"
-def make_key( album_obj)
-  return "#{album_obj.artist}__#{album_obj.title}"
-end
-
-# retrieve album metadata, either from the cache or from allmusic
-def get_metadata( album )
-  genres = nil
-  styles = nil
-  album_key = make_key( album )
-  if $db[album_key].any?
-    # p "#{$db[album_key]}"
-    genres = $db[album_key][:genres]
-    styles = $db[album_key][:styles]
-  else
-    allmusic = Allmusic.new album.artist, album.title
-    genres = allmusic.genres
-    styles = allmusic.styles
-    metadata = { :genres => genres, :styles => styles }
-    $db[album_key] = metadata
-    $db.flush
-  end
-  return genres, styles
-end
-
-# make the genre string e.g. "Jazz [Guitar Jazz]"
-# TODO improve this algorith e.g. select most frequent
-def build_genre( genres, styles )
-  genre = ("" if genres.nil?) || genres[0]
-  style = ("" if styles.nil?) || styles[0]
-  return "#{genre} [#{style}]"
-end
-
 # main loop - fix album genre unless tagged 'proteected'
 itunes.albums.each do |album|
+  metadata = RJL::Metadata.new( album: album )
   progressbar.increment
   unless album.protected?
-    genres, styles = get_metadata( album )
-    new_genre = build_genre( genres, styles )
-    album.genre = new_genre
-    progressbar.log "#{album.artist}, '#{album.title}' -> #{new_genre}"
+    new_genre = metadata.genre( album )
+    unless new_genre == ""
+      album.genre = metadata.genre( album )
+      progressbar.log "#{album.album_artist}, '#{album.title}' -> #{new_genre}"
+    end
   end
 end
-
-$db.close
