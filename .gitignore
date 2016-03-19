@@ -4,5 +4,5 @@
 *.db
 *.log
 bin
-doc
+doc/*
 sandpit
