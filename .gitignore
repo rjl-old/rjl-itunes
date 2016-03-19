@@ -3,6 +3,5 @@
 *.out
 *.db
 *.log
-bin
 doc/*
 sandpit
