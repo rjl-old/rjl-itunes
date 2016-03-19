@@ -13,5 +13,5 @@
 /pkg/
 /spec/reports/
 /tmp/
-rjl-itunes-0.1.gem
+*.gem
 Gemfile.lock
