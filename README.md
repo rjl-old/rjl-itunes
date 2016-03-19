@@ -4,11 +4,19 @@
 
 ## Installation
 
-    gem install rjl-itunes
+Add this line to your application's Gemfile:
 
-## Dependencies
+```ruby
+gem 'wanker'
+```
 
-rjl-itunes uses [rjl-allmusic](https://github.com/richardjlyon/allmusic) to generate genre information for tracks.
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install rjl-itunes
 
 ## Usage
 
