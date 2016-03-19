@@ -4,8 +4,12 @@ include Appscript
 
 module RJL
   # RJL_itunes::Itunes contains the public api for Itunes.
+  # @example
+  #    require 'rjl/itunes'
+  #
+  #    itunes = RJL::Itunes.new
+  #    albums = itunes.albums
   # @api public
-  # @example itunes = Itunes.new
 
   class Itunes
 

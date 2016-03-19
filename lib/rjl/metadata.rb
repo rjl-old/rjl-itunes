@@ -5,7 +5,7 @@ module RJL
   # Gets metadata for an album from allmusic.com, caching the results. See
   # [rjl-music](https://github.com/richardjlyon/allmusic) for details. Computes
   # a simplified genre by selecting the highest frequency genre and style in the
-  # library and combining them in a string.
+  # library and combining them in a string. Creates a cache file `lib/cache/cache.db`
   class Metadata
 
     attr_reader :genres
