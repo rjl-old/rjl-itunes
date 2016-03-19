@@ -22,9 +22,9 @@ Or install it yourself as:
 
 ### Getting a list of albums
 
-    require 'itunes'
+    require 'rjl/itunes'
 
-    itunes = Itunes.new
+    itunes = RJL::Itunes.new
 
     itunes.albums.each do |album|
         puts "#{album.album_artist}, '#{album.title}'"
@@ -38,11 +38,11 @@ Or install it yourself as:
     album = itunes.albums[0]
     album.genre = "Pop/Rock"
 
-See `/examples` for more uses. See 'Warning' below.
+See `/bin` for more uses. See 'Warning' below.
 
 ## How it works
 
-`itunes` uses applescript to interact with your currently active Itunes library. Albums can be manipulated in a straightforward manner. Playlists and Playlist Folders can be created and destroyed, and albums added to them.
+`rjl-itunes` uses applescript to interact with your currently active Itunes library. Albums can be manipulated in a straightforward manner. Playlists and Playlist Folders can be created and destroyed, and albums added to them.
 
 ### Genres
 
@@ -67,7 +67,7 @@ This might wreck your iTunes library in two ways. You might use commands that ac
 
 ## Testing
 
-RSpec tests are provided adn a sample library. The tests will only work with this library.
+RSpec tests are provided. The tests will not work with your library, but I can't distribute mine because of copyright issues. You can edit the tests to suit your own library.
 
 ## Changes
 
