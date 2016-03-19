@@ -1,9 +1,9 @@
-require_relative "../lib/itunes"
+require_relative "../lib/rjl"
 
-describe Album do
+describe RJL::Album do
 
   before :all do
-    @itunes = Itunes.new
+    @itunes = RJL::Itunes.new
     TEST = "TEST " + Time.now.strftime("%d/%m/%Y %H:%M")
   end
 
@@ -42,7 +42,7 @@ describe Album do
         album_artist = "Simply Red"
         album_title = "Greatest Hits"
         album = @itunes.albums(album_artist: album_artist, title: album_title )
-        expect(album.class).to eq Album
+        expect(album.class).to eq RJL::Album
         expect(album.title).to eq(album_title)
         expect(album.album_artist).to eq(album_artist)
       end
@@ -78,7 +78,7 @@ describe Album do
       it "changes all the genres of the album's tracks" do
         album = @itunes.albums(album_artist: "Simply Red", title: "Greatest Hits" )
         old_genre = album.genre
-        expect(old_genre).to eq("Pop/Rock [Adult Contemporary]")
+        expect(old_genre).to eq("Pop/Rock [Alternative/Indie Rock]")
         album.genre = TEST
         expect(album.tracks[0].genre).to eq(TEST)
         album.genre = old_genre
